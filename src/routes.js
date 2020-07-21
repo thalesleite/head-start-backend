@@ -4,7 +4,9 @@ const routes  = express.Router();
 
 const UsersController = require('./controllers/UsersController');
 const CoursesController = require('./controllers/CoursesController');
-//const SessionController = require('./controllers/SessionController');
+const SessionController = require('./controllers/SessionController');
+
+routes.post('/sessions', SessionController.create);
 
 routes.get('/users', UsersController.index);
 
@@ -17,7 +19,7 @@ routes.post('/users', celebrate({
   })
 }), UsersController.create);
 
-routes.get('/courses', UsersController.index);
+routes.get('/courses', CoursesController.index);
 
 routes.post('/courses', celebrate({
   [Segments.BODY]: Joi.object().keys({
@@ -25,6 +27,6 @@ routes.post('/courses', celebrate({
       description: Joi.string().required(),
       duration: Joi.number().required()
   })
-}), UsersController.create);
+}), CoursesController.create);
 
 module.exports = routes;
