@@ -1,6 +1,6 @@
 exports.up = function(knex) {
   return knex.schema.createTable('users_courses', function (table) {
-      table.string('id').primary();
+      table.increments();
 
       table.integer('user_id').unsigned();
       table.foreign('user_id').references('Users.id');

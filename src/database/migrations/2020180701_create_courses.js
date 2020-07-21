@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
   return knex.schema.createTable('courses', function (table) {
-      table.string('id').primary();
+      table.increments();
       table.string('name').notNullable();
       table.string('description').notNullable();
       table.decimal('duration').notNullable();
