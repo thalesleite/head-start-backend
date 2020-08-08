@@ -15,6 +15,8 @@ routes.post('/users', celebrate({
       name: Joi.string().required(),
       email: Joi.string().required().email(),
       password: Joi.string().required(),
+      address: Joi.string().required(),
+      phone: Joi.number().required(),
       type: Joi.number().required()
   })
 }), UsersController.create);
@@ -24,7 +26,10 @@ routes.get('/courses', CoursesController.index);
 routes.post('/courses', celebrate({
   [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required(),
-      description: Joi.string().required(),
+      description1: Joi.string().required(),
+      description2: [Joi.string().optional(), Joi.allow(null)],
+      price: Joi.number().required(),
+      type: Joi.string().required(),
       duration: Joi.number().required()
   })
 }), CoursesController.create);
