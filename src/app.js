@@ -14,9 +14,14 @@ const app = express();
 //   origin: '*',
 //   optionsSuccessStatus: 200
 // }));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
+//app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+//app.use(cors());
 app.use(routes);
 
 module.exports = app;
