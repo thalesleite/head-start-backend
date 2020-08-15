@@ -17,7 +17,7 @@ const app = express();
 // });
 
 const corsOptions = {
-  origin: '*',
+  origin: 'https://git.heroku.com/head-start-app.git',
   optionsSuccessStatus: 200,
 }
 app.use(cors(corsOptions));
