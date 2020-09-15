@@ -6,8 +6,11 @@ const UsersController = require('./controllers/UsersController');
 const CoursesController = require('./controllers/CoursesController');
 const SessionController = require('./controllers/SessionController');
 const EmailController = require('./controllers/EmailController');
+const PaymentController = require('./controllers/PaymentController');
 
 routes.post('/sessions', SessionController.create);
+
+routes.post('/payment-session', PaymentController.create);
 
 routes.get('/users', UsersController.index);
 

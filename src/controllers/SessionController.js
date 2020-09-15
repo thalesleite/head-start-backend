@@ -6,7 +6,7 @@ module.exports = {
 
       const user = await connection('users')
         .where('email', email)
-        .select('name')
+        .select('name', 'email', 'type')
         .first()
       ;
 
@@ -14,6 +14,6 @@ module.exports = {
         return response.status(400).json({ error: 'No user found with this email!' });
       }
 
-      return response.json(email);
+      return response.json(user);
   }
 }
