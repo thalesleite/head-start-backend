@@ -3,7 +3,7 @@ const YOUR_DOMAIN = 'http://localhost:3000/';
 
 module.exports = {
   async create(request, response){
-    const { cartTotal } = request.body;
+    const { total } = request.body;
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -15,7 +15,7 @@ module.exports = {
               name: 'Head Start Courses',
               //images: ['https://i.imgur.com/EHyR2nP.png'],
             },
-            unit_amount: parseFloat(`${cartTotal}00`),
+            unit_amount_decimal: total,
           },
           quantity: 1,
         },
