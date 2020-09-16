@@ -1,5 +1,5 @@
 const stripe = require('stripe')('sk_test_51HRaroIVkTQz2SNYPFAIFyzfjavaKDJhydaqOBQGfoxbZtoXSeXO6rQYZ48ipy86H4Msg3zrA5fuhn08TuTiJZDf004983uB1B');
-const YOUR_DOMAIN = 'http://localhost:3000/';
+const DOMAIN = 'https://head-start-app.herokuapp.com/';
 
 module.exports = {
   async create(request, response){
@@ -21,8 +21,8 @@ module.exports = {
         },
       ],
       mode: 'payment',
-      success_url: `${YOUR_DOMAIN}?success=true`,
-      cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+      success_url: `${DOMAIN}?success=true`,
+      cancel_url: `${DOMAIN}?canceled=true`,
     });
 
     response.json({ id: session.id });
