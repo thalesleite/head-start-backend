@@ -13,7 +13,6 @@ routes.post('/sessions', SessionController.create);
 routes.post('/payment-session', PaymentController.create);
 
 routes.get('/users', UsersController.index);
-
 routes.post('/users', celebrate({
   [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required(),
@@ -26,7 +25,7 @@ routes.post('/users', celebrate({
 }), UsersController.create);
 
 routes.get('/courses', CoursesController.index);
-
+routes.get('/courses/:id', CoursesController.show);
 routes.post('/courses', celebrate({
   [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required(),

@@ -13,7 +13,6 @@ module.exports = {
             currency: 'eur',
             product_data: {
               name: 'Head Start Courses',
-              //images: ['https://i.imgur.com/EHyR2nP.png'],
             },
             unit_amount_decimal: total,
           },

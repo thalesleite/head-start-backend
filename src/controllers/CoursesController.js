@@ -19,5 +19,16 @@ module.exports = {
       });
 
       return response.json({ id });
+  },
+  async show(request, response) {
+    const { id } = request.params;
+
+    const course = await connection('courses').where('id', id).first();
+
+    if (!course) {
+        return response.status(400).json({ message: 'Course not found!' });
+    }
+
+    return response.json({course});
   }
 }
