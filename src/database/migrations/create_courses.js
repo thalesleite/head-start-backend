@@ -5,6 +5,8 @@ exports.up = function(knex) {
       table.string('name').notNullable();
       table.string('description1').notNullable();
       table.string('description2');
+      table.string('description1_pt').notNullable();
+      table.string('description2_pt');
       table.decimal('price').notNullable();
       table.string('type').notNullable();
       table.decimal('duration').notNullable();
@@ -12,5 +14,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-return knex.schema.dropTable('courses');
+  return knex.schema.dropTable('courses');
 };

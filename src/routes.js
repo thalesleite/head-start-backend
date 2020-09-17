@@ -26,11 +26,14 @@ routes.post('/users', celebrate({
 
 routes.get('/courses', CoursesController.index);
 routes.get('/courses/:id', CoursesController.show);
+routes.put('/courses/:id', CoursesController.update);
 routes.post('/courses', celebrate({
   [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required(),
       description1: Joi.string().required(),
       description2: [Joi.string().optional(), Joi.allow(null)],
+      description1_pt: Joi.string().required(),
+      description2_pt: [Joi.string().optional(), Joi.allow(null)],
       price: Joi.number().required(),
       type: Joi.string().required(),
       duration: Joi.number().required()
