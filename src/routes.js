@@ -20,13 +20,14 @@ routes.post('/users', celebrate({
       password: Joi.string().required(),
       address: Joi.string().required(),
       phone: Joi.number().required(),
-      type: Joi.number().required()
+      type: [Joi.string().optional(), Joi.allow(null)]
   })
 }), UsersController.create);
 
 routes.get('/courses', CoursesController.index);
 routes.get('/courses/:id', CoursesController.show);
 routes.put('/courses/:id', CoursesController.update);
+routes.delete('/courses/:id', CoursesController.delete);
 routes.post('/courses', celebrate({
   [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required(),

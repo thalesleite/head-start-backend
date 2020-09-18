@@ -67,5 +67,12 @@ module.exports = {
     });
 
     return response.json({ course });
-  }
+  },
+  async delete(request, response) {
+    const { id } = request.params;
+
+    await connection('courses').where('id', id).delete();
+
+    return response.status(204).send();
+  },
 }
