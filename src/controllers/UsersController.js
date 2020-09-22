@@ -9,12 +9,16 @@ module.exports = {
       return response.json(users);
   },
   async create(request, response) {
-    const { name, email, password, address, phone } = request.body;
-    const type = 1;
+    const { name, email, password, address, phone, type } = request.body;
+
+    const user = await connection('users').select('*').where('email', email).first();
+    if ( user ) {
+        return response.status(400).json({ message: 'Email already registered!' });
+    }
 
     bcrypt.hash(password, saltRounds, 
         async (err, hash) => {
-            if ( err ) {
+            if (err) {
                 return err.message;
             }
 
