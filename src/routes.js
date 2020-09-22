@@ -8,19 +8,24 @@ const SessionController = require('./controllers/SessionController');
 const EmailController = require('./controllers/EmailController');
 const PaymentController = require('./controllers/PaymentController');
 
-routes.post('/sessions', SessionController.create);
+routes.post('/sessions', celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().required()
+  })
+}), SessionController.create);
 
 routes.post('/payment-session', PaymentController.create);
 
 routes.get('/users', UsersController.index);
 routes.post('/users', celebrate({
   [Segments.BODY]: Joi.object().keys({
-      name: Joi.string().required(),
-      email: Joi.string().required().email(),
-      password: Joi.string().required(),
-      address: Joi.string().required(),
-      phone: Joi.number().required(),
-      type: [Joi.string().optional(), Joi.allow(null)]
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(7).alphanum().required(),
+    address: Joi.string().required(),
+    phone: Joi.number().required(),
+    type: [Joi.string().optional(), Joi.allow(null)]
   })
 }), UsersController.create);
 
