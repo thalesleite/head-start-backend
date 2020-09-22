@@ -1,4 +1,6 @@
 const connection = require('../database/connection');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 module.exports = {
   async index(request, response){
@@ -7,18 +9,25 @@ module.exports = {
       return response.json(users);
   },
   async create(request, response) {
-      const { name, email, password, address, phone } = request.body;
-      const type = 1;
+    const { name, email, password, address, phone } = request.body;
+    const type = 1;
 
-      const [id] = await connection('users').insert({
-          name,
-          email,
-          password,
-          address,
-          phone,
-          type
-      });
+    bcrypt.hash(password, saltRounds, 
+        async (err, hash) => {
+            if ( err ) {
+                return err.message;
+            }
 
-      return response.json({ id });
+            const [id] = await connection('users').insert({
+                name,
+                email,
+                password: hash,
+                address,
+                phone,
+                type
+            });
+
+            return response.json({ id });
+    });
   }
 }
