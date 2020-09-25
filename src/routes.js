@@ -4,6 +4,7 @@ const routes  = express.Router();
 
 const UsersController = require('./controllers/UsersController');
 const CoursesController = require('./controllers/CoursesController');
+const UsersCoursesController = require('./controllers/UsersCoursesController');
 const SessionController = require('./controllers/SessionController');
 const EmailController = require('./controllers/EmailController');
 const PaymentController = require('./controllers/PaymentController');
@@ -18,6 +19,7 @@ routes.post('/sessions', celebrate({
 routes.post('/payment-session', PaymentController.create);
 
 routes.get('/users', UsersController.index);
+routes.get('/user/:id', UsersController.show);
 routes.post('/users', celebrate({
   [Segments.BODY]: Joi.object().keys({
     name: Joi.string().required(),
@@ -45,6 +47,15 @@ routes.post('/courses', celebrate({
       duration: Joi.number().required()
   })
 }), CoursesController.create);
+
+routes.get('/user-courses/:id', UsersCoursesController.show);
+routes.post('/user-courses', celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    user_id: Joi.number().required(),
+    course_id: Joi.number().required(),
+    duration: Joi.number().required()
+  })
+}), UsersCoursesController.create);
 
 routes.post('/send', celebrate({
   [Segments.BODY]: Joi.object().keys({

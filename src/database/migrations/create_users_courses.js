@@ -9,6 +9,7 @@ exports.up = function(knex) {
       table.foreign('course_id').references('Courses.id');
 
       table.decimal('days_left').notNullable();
+      table.datetime('date_purchase').notNullable();
   });
 };
 

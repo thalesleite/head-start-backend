@@ -8,6 +8,16 @@ module.exports = {
 
       return response.json(users);
   },
+  async show(request, response) {
+        const { id } = request.params;
+
+        const user = await connection('users')
+            .where('id', id)
+            .select('id', 'name', 'email', 'type')
+            .first();
+
+    return response.json(user);
+  },
   async create(request, response) {
     const { name, email, password, address, phone, type } = request.body;
 
