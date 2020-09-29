@@ -1,6 +1,6 @@
 const stripe = require('stripe')('sk_test_51HRaroIVkTQz2SNYPFAIFyzfjavaKDJhydaqOBQGfoxbZtoXSeXO6rQYZ48ipy86H4Msg3zrA5fuhn08TuTiJZDf004983uB1B');
 //const DOMAIN = 'http://localhost:3000';
-const DOMAIN = 'https://thales-head-start.netlify.app/';
+const DOMAIN = 'https://thales-head-start.netlify.app';
 
 module.exports = {
   async create(request, response){
@@ -21,8 +21,8 @@ module.exports = {
         },
       ],
       mode: 'payment',
-      success_url: `${DOMAIN}success`,
-      cancel_url: `${DOMAIN}cancel`,
+      success_url: `${DOMAIN}/success`,
+      cancel_url: `${DOMAIN}/cancel`,
     });
 
     response.json({ id: session.id });
