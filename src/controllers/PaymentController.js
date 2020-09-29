@@ -21,8 +21,8 @@ module.exports = {
         },
       ],
       mode: 'payment',
-      success_url: `${DOMAIN}/success`,
-      cancel_url: `${DOMAIN}/cancel`,
+      success_url: `${DOMAIN}success`,
+      cancel_url: `${DOMAIN}cancel`,
     });
 
     response.json({ id: session.id });

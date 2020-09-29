@@ -16,7 +16,8 @@ module.exports = {
                           .where('user_id', id);
 
         let levelCourse = null;
-        if ( course ) {
+        if ( course.length > 0 ) {
+            console.log(course);
             const { level } = course[0];
             levelCourse = level;
         }
