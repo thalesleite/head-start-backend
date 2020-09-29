@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 module.exports = {
   async sendEmail(request, response){
-    const { name, email, message } = request.body;
+    const { name, email, message, subject } = request.body;
     const user = 'thalesaleite@gmail.com';
     const password = 'Shika1992';
 
@@ -18,7 +18,7 @@ module.exports = {
     const mailOptions = {
       from: `${user}`,
       to: `${email}, ${user}`,
-      subject: 'Test!!!',
+      subject: `${subject}`,
       html: `<p>Name: ${name}</p>
              <p>Message: ${message}</p>`
     };

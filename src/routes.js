@@ -64,6 +64,7 @@ routes.post('/send', celebrate({
     name: Joi.string().required(),
     email: Joi.string().required().email(),
     message: Joi.string().required(),
+    subject: Joi.string().required()
   })
 }), EmailController.sendEmail);
 
