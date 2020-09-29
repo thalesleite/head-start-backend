@@ -11,12 +11,22 @@ module.exports = {
   async show(request, response) {
         const { id } = request.params;
 
+        const course = await connection('users_courses')
+                          .join('courses', 'users_courses.course_id', '=', 'courses.id')
+                          .where('user_id', id);
+
+        let levelCourse = null;
+        if ( course ) {
+            const { level } = course[0];
+            levelCourse = level;
+        }
+
         const user = await connection('users')
             .where('id', id)
             .select('id', 'name', 'email', 'type')
             .first();
 
-    return response.json(user);
+    return response.json({level: levelCourse, ...user});
   },
   async create(request, response) {
     const { name, email, password, address, phone, type } = request.body;

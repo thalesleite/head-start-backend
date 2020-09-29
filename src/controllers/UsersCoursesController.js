@@ -10,13 +10,17 @@ module.exports = {
       const { 
         user_id, 
         course_id,
-        duration
+        type,
+        deadline
       } = request.body;
+
+      const level = type === 'online' ? 1 : 0;
 
       const [id] = await connection('users_courses').insert({
         user_id,
         course_id,
-        days_left: duration,
+        level,
+        deadline,
         date_purchase: connection.fn.now()
       });
 
@@ -34,5 +38,21 @@ module.exports = {
     }
 
     return response.json({course});
+  },
+  async update(request, response) {
+    const { 
+      user_id,
+      course_id,
+      level
+    } = request.body;
+
+    const course = await connection('users_courses')
+                          .where('user_id', user_id)
+                          .andWhere('course_id', course_id)
+                          .update({
+                            level: level
+                          });
+
+    return response.json({ course });
   }
 }

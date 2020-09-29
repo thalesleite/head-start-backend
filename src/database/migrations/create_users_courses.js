@@ -8,7 +8,8 @@ exports.up = function(knex) {
       table.integer('course_id').unsigned();
       table.foreign('course_id').references('Courses.id');
 
-      table.decimal('days_left').notNullable();
+      table.integer('level').defaultTo(0);
+      table.datetime('deadline').notNullable();
       table.datetime('date_purchase').notNullable();
   });
 };
