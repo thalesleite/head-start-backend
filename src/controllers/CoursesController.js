@@ -6,6 +6,11 @@ module.exports = {
 
       return response.json(courses);
   },
+  async showActive(request, response) {
+    const courses = await connection('courses').select('*').where('active', true);
+
+    return response.json(courses);
+  },
   async create(request, response) {
       const { 
         name, 
@@ -26,7 +31,8 @@ module.exports = {
           description2_pt,
           price,
           type,
-          duration
+          duration,
+          active: true
       });
 
       return response.json({ id });
@@ -52,7 +58,8 @@ module.exports = {
       description2_pt,
       price,
       type,
-      duration
+      duration,
+      active
     } = request.body;
 
     const course = await connection('courses').where('id', id).update({
@@ -63,16 +70,10 @@ module.exports = {
       description2_pt: description2_pt,
       price: price,
       type: type,
-      duration: duration
+      duration: duration,
+      active: active
     });
 
     return response.json({ course });
-  },
-  async delete(request, response) {
-    const { id } = request.params;
-
-    await connection('courses').where('id', id).delete();
-
-    return response.status(204).send();
-  },
+  }
 }

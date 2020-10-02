@@ -32,9 +32,9 @@ routes.post('/users', celebrate({
 }), UsersController.create);
 
 routes.get('/courses', CoursesController.index);
+routes.get('/courses-active/', CoursesController.showActive);
 routes.get('/courses/:id', CoursesController.show);
 routes.put('/courses/:id', CoursesController.update);
-routes.delete('/courses/:id', CoursesController.delete);
 routes.post('/courses', celebrate({
   [Segments.BODY]: Joi.object().keys({
       name: Joi.string().required(),
