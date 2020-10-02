@@ -71,5 +71,27 @@ module.exports = {
     } catch (error) {
       console.log(error);
     }
+  },
+  async sendRegistrationEmail(name, email) {
+    const mailOptions = {
+      from: `${user}`,
+      to: `${email}`,
+      subject: `Head Start Courses - Registration`,
+      html: `
+        <p>Hi, ${name}</p>
+        <p>Your registration has been completed!</p>
+        <p>Enjoy our courses!</p>
+      `
+    };
+
+    await smtpTransport.sendMail(mailOptions,
+      (error, info) => {
+        if(error) {
+          response.send(error);
+        }else {
+          response.send('Email sent: ' + info.response);
+        }
+        smtpTransport.close();
+    });
   }
 }

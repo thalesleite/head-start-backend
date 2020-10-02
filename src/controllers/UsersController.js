@@ -1,4 +1,7 @@
 const connection = require('../database/connection');
+
+const EmailController = require('./EmailController');
+
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -15,10 +18,11 @@ module.exports = {
                           .join('courses', 'users_courses.course_id', '=', 'courses.id')
                           .where('user_id', id);
 
-        let levelCourse = null;
+        let levelCourse, deadlineCourse = null;
         if ( course.length > 0 ) {
-            const { level } = course[0];
+            const { level, deadline } = course[0];
             levelCourse = level;
+            deadlineCourse = deadline;
         }
 
         const user = await connection('users')
@@ -26,7 +30,7 @@ module.exports = {
             .select('id', 'name', 'email', 'type')
             .first();
 
-    return response.json({level: levelCourse, ...user});
+    return response.json({level: levelCourse, deadline: deadlineCourse,...user});
   },
   async create(request, response) {
     const { name, email, password, address, phone, type } = request.body;
@@ -51,6 +55,10 @@ module.exports = {
                 type
             });
 
+            if (id) {
+                await EmailController.sendRegistrationEmail( name, email );
+            }
+            
             return response.json({ id });
     });
   }
