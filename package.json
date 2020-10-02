@@ -15,8 +15,11 @@
     "celebrate": "^12.1.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "html-creator": "^0.4.4",
+    "html5-to-pdf": "^4.0.1",
     "knex": "^0.21.2",
     "nodemailer": "^6.4.11",
+    "puppeteer": "^5.3.1",
     "sqlite3": "^5.0.0",
     "stripe": "^8.96.0"
   },

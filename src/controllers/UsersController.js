@@ -17,7 +17,6 @@ module.exports = {
 
         let levelCourse = null;
         if ( course.length > 0 ) {
-            console.log(course);
             const { level } = course[0];
             levelCourse = level;
         }

@@ -63,9 +63,16 @@ routes.post('/send', celebrate({
   [Segments.BODY]: Joi.object().keys({
     name: Joi.string().required(),
     email: Joi.string().required().email(),
-    message: Joi.string().required(),
-    subject: Joi.string().required()
+    phone: Joi.number().required(),
+    subject: Joi.string().required(),
+    message: Joi.string().required()
   })
 }), EmailController.sendEmail);
+routes.post('/send-certificate', celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    name: Joi.string().required(),
+    email: Joi.string().required().email()
+  })
+}), EmailController.sendCertificate);
 
 module.exports = routes;
