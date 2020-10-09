@@ -8,6 +8,8 @@ exports.up = function(knex) {
       table.string('address').notNullable();
       table.decimal('phone').notNullable();
       table.decimal('type').notNullable();
+      table.string('token');
+      table.decimal('expires');
   });
 };
 

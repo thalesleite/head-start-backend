@@ -5,6 +5,8 @@ const path = require('path');
 const user = 'bartira@headstartcourses.ie';
 const password = 'he@d2tart!';
 
+const local = require('../utils/getDomain');
+
 const smtpTransport = nodemailer.createTransport({
   service: 'gmail',
   port: 587,
@@ -81,6 +83,28 @@ module.exports = {
         <p>Hi, ${name}</p>
         <p>Your registration has been completed!</p>
         <p>Enjoy our courses!</p>
+      `
+    };
+
+    await smtpTransport.sendMail(mailOptions,
+      (error, info) => {
+        if(error) {
+          response.send(error);
+        }else {
+          response.send('Email sent: ' + info.response);
+        }
+        smtpTransport.close();
+    });
+  },
+  async sendPassword(email, token) {
+    const mailOptions = {
+      from: `${user}`,
+      to: `${email}`,
+      subject: `Head Start Courses - Reset Password`,
+      html: `
+        <p>Hello there,</p>
+        <p>Please click on the following link to reset your password:</p>
+        <p>${local.DOMAIN}/reset/${token}</p>
       `
     };
 

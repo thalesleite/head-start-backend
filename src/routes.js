@@ -30,6 +30,11 @@ routes.post('/users', celebrate({
     type: [Joi.string().optional(), Joi.allow(null)]
   })
 }), UsersController.create);
+routes.post('/users-token', celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    email: Joi.string().email().required()
+  })
+}), UsersController.setToken);
 
 routes.get('/courses', CoursesController.index);
 routes.get('/courses-active/', CoursesController.showActive);
@@ -74,5 +79,10 @@ routes.post('/send-certificate', celebrate({
     email: Joi.string().required().email()
   })
 }), EmailController.sendCertificate);
+routes.post('/send-password', celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    email: Joi.string().required().email()
+  })
+}), EmailController.sendPassword);
 
 module.exports = routes;

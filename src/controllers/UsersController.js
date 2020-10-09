@@ -1,4 +1,5 @@
 const connection = require('../database/connection');
+const crypto = require('crypto');
 
 const EmailController = require('./EmailController');
 
@@ -61,5 +62,27 @@ module.exports = {
             
             return response.json({ id });
     });
+  },
+  async setToken(request, response) {
+    const { email } = request.body;
+
+    const user = await connection('users').select('*').where('email', email).first();
+    if ( !user ) {
+      return response.status(400).json({ message: 'Email not found!' });
+    }
+
+    const token = crypto.randomBytes(20).toString('hex');
+    const expires = Date.now() + 3600000;
+
+    const userToken = await connection('users').where('email', email).update({
+        token,
+        expires
+    });
+
+    if ( userToken ) {
+        await EmailController.sendPassword( email , token );
+    }
+    
+    return response.json({ userToken });
   }
 }
