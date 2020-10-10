@@ -33,6 +33,20 @@ module.exports = {
 
     return response.json({level: levelCourse, deadline: deadlineCourse,...user});
   },
+  async token(request, response) {
+    const { token } = request.params;
+
+    const user = await connection('users')
+                        .where('token', token)
+                        .first();
+    const now = Date.now();
+
+    if ( !user /*|| ( user.expires < now )*/ ) {
+        return response.status(400).json({ message: 'Token has expired!' });
+    }
+
+    return response.json(user);
+  },
   async create(request, response) {
     const { name, email, password, address, phone, type } = request.body;
 
@@ -84,5 +98,15 @@ module.exports = {
     }
     
     return response.json({ userToken });
+  },
+  async resetPassword(request, response) {
+    const { id, password } = request.body;
+    console.log(id);
+
+    const user = await connection('users').where('id', id).update({
+        password
+    });
+    
+    return response.json({ user });
   }
 }

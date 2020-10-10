@@ -20,6 +20,9 @@ routes.post('/payment-session', PaymentController.create);
 
 routes.get('/users', UsersController.index);
 routes.get('/user/:id', UsersController.show);
+//routes.put('/user/:id', UsersController.update);
+routes.get('/user-validate/:token', UsersController.token);
+routes.put('/user-reset-password', UsersController.resetPassword);
 routes.post('/users', celebrate({
   [Segments.BODY]: Joi.object().keys({
     name: Joi.string().required(),
