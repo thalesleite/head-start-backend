@@ -28,10 +28,28 @@ module.exports = {
 
         const user = await connection('users')
             .where('id', id)
-            .select('id', 'name', 'email', 'type')
+            .select('id', 'name', 'email', 'address', 'phone', 'type')
             .first();
 
     return response.json({level: levelCourse, deadline: deadlineCourse,...user});
+  },
+  async update(request, response) {
+      const { 
+        id,  
+        name,
+        email,
+        address,
+        phone
+      } = request.body;
+  
+      const course = await connection('users').where('id', id).update({
+        name,
+        email,
+        address,
+        phone
+      });
+  
+      return response.json({ course });
   },
   async token(request, response) {
     const { token } = request.params;
@@ -101,12 +119,21 @@ module.exports = {
   },
   async resetPassword(request, response) {
     const { id, password } = request.body;
-    console.log(id);
 
-    const user = await connection('users').where('id', id).update({
-        password
+    bcrypt.hash(password, saltRounds, 
+        async (err, hash) => {
+            if (err) {
+                return err.message;
+            }
+
+            const user = await connection('users').where('id', id).update({
+                password: hash,
+                token: null,
+                expires: null
+            });
+
+            return response.json({ user });
     });
     
-    return response.json({ user });
   }
 }
