@@ -2,8 +2,8 @@ const nodemailer = require('nodemailer');
 const generateCertificate = require('../utils/generateCertificate');
 const path = require('path');
 
-const user = 'bartira@headstartcourses.ie';
-const password = 'he@d2tart!';
+const user = process.env.EMAIL_USERNAME;
+const password = process.env.EMAIL_PASSWORD;
 
 const local = require('../utils/getDomain');
 

@@ -5,37 +5,35 @@ const CoursesSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    lowercase: true
-  },
-  password: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  address: {
+  description1: {
     type: String,
     required: true
   },
-  phone: {
+  description2: {
+    type: String
+  },
+  description1_pt: {
+    type: String,
+    required: true
+  },
+  description2_pt: {
+    type: String
+  },
+  price: {
     type: Number,
     required: true
   },
   type: {
-    type: Number,
-    required: true,
-    default: 1
-  },
-  token: {
     type: String,
-    trim: true
+    required: true
   },
-  expires: {
-    type: String,
-    trim: true
+  duration: {
+    type: Number
+  },
+  active: {
+    type: Boolean,
+    default: true,
+    required: true
   }
 });
 
