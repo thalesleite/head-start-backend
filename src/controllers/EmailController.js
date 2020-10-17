@@ -1,6 +1,8 @@
 const nodemailer = require('nodemailer');
 const generateCertificate = require('../utils/generateCertificate');
 const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const user = process.env.EMAIL_USERNAME;
 const password = process.env.EMAIL_PASSWORD;
@@ -89,9 +91,9 @@ module.exports = {
     await smtpTransport.sendMail(mailOptions,
       (error, info) => {
         if(error) {
-          response.send(error);
+          console.log(error);
         }else {
-          response.send('Email sent: ' + info.response);
+          console.log('Email sent: ' + info.response);
         }
         smtpTransport.close();
     });
@@ -111,9 +113,9 @@ module.exports = {
     await smtpTransport.sendMail(mailOptions,
       (error, info) => {
         if(error) {
-          response.send(error);
+          console.log(error);
         }else {
-          response.send('Email sent: ' + info.response);
+          console.log('Email sent: ' + info.response);
         }
         smtpTransport.close();
     });

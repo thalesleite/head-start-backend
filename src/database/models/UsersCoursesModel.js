@@ -24,5 +24,5 @@ const UsersCoursesSchema = new mongoose.Schema({
   }
 });
 
-const UsersCourses = mongoose.model('UsersCourses', UsersCoursesSchema);
+const UsersCourses = mongoose.model('users_courses', UsersCoursesSchema);
 module.exports = UsersCourses;

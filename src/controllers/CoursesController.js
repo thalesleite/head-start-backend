@@ -49,7 +49,7 @@ module.exports = {
       return response.status(400).json({ message: 'Course not found!' });
     }
 
-    return response.json({course});
+    return response.json({ course });
   },
   async update(request, response) {
     const { 
@@ -66,8 +66,8 @@ module.exports = {
     } = request.body;
 
     await CoursesModel.findById(id, async (err, course) => {
-        if (err)
-          res.send(err);
+        if (err) 
+          response.json(err);
 
         course.name = name;
         course.description1 = description1;
@@ -80,7 +80,8 @@ module.exports = {
         course.active = active;
 
         await course.save((err) => {
-          if (err) res.json(err);
+          if (err) 
+            response.json(err);
 
           return response.json({ course });
         });

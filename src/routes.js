@@ -60,8 +60,8 @@ routes.get('/user-courses/:id', UsersCoursesController.show);
 routes.put('/user-courses', UsersCoursesController.update);
 routes.post('/user-courses', celebrate({
   [Segments.BODY]: Joi.object().keys({
-    user_id: Joi.number().required(),
-    course_id: Joi.number().required(),
+    user_id: Joi.string().required(),
+    course_id: Joi.string().required(),
     type: Joi.string().required(),
     deadline: Joi.string().required()
   })

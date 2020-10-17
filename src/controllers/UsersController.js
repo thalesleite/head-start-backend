@@ -14,27 +14,19 @@ module.exports = {
       return response.json(users);
   },
   async show(request, response) {
-        const { id } = request.params;
+      const { id } = request.params;
+      const course = await UsersCoursesModel.find({ 'user_id': id });
 
-        // const course = await connection('users_courses')
-        //                   .join('courses', 'users_courses.course_id', '=', 'courses.id')
-        //                   .where('user_id', id);
-        let course = await UsersCoursesModel.find({ 'user_id': id });
+      let levelCourse, deadlineCourse = null;
+      if ( course.length > 0 ) {
+          const { level, deadline } = course[0];
+          levelCourse = level;
+          deadlineCourse = deadline;
+      }
+      
+      const user = await UsersModel.findById(id);
 
-        let levelCourse, deadlineCourse = null;
-        if ( course.length > 0 ) {
-            const { level, deadline } = course[0];
-            levelCourse = level;
-            deadlineCourse = deadline;
-        }
-
-        // const user = await connection('users')
-        //     .where('id', id)
-        //     .select('id', 'name', 'email', 'address', 'phone', 'type')
-        //     .first();
-        const user = await UsersModel.find({ 'user_id': id });
-
-    return response.json({level: levelCourse, deadline: deadlineCourse,...user});
+    return response.json({level: levelCourse, deadline: deadlineCourse,...user._doc});
   },
   async update(request, response) {
     const { 
@@ -47,7 +39,7 @@ module.exports = {
 
     await UsersModel.findById(id, async (err, user) => {
         if (err)
-          res.send(err);
+          response.json(err);
 
         user.name = name;
         user.email = email;
@@ -55,7 +47,7 @@ module.exports = {
         user.phone = phone;
         
         await user.save((err) => {
-          if (err) res.json(err);
+          if (err) response.json(err);
 
           return response.json({ user });
         });
@@ -68,11 +60,11 @@ module.exports = {
 
     const now = Date.now();
 
-    if ( !user || ( user.expires < now ) ) {
+    if ( user.length === 0 || ( user.expires < now ) ) {
         return response.status(400).json({ message: 'Token has expired!' });
     }
 
-    return response.json(user);
+    return response.json(user[0]);
   },
   async create(request, response) {
     const { name, email, password, address, phone, type } = request.body;
@@ -120,25 +112,16 @@ module.exports = {
     const token = crypto.randomBytes(20).toString('hex');
     const expires = Date.now() + 3600000;
 
-    // const userToken = await connection('users').where('email', email).update({
-    //     token,
-    //     expires
-    // });
+    await UsersModel.findOneAndUpdate({ 'email': email }, {
+        token: token,
+        expires: expires
+      },
+      async (err, res) => {
+          if (err) console.log(err);
+          
+          await EmailController.sendPassword(email, token);
 
-    await UsersModel.find({ 'email': email }, async (err, user) => {
-        if (err)
-          res.send(err);
-
-        user.token = token;
-        user.expires = expires;
-        
-        await user.save(async (err) => {
-          if (err) res.json(err);
-
-          await EmailController.sendPassword( email , token );
-
-          return response.json({ user });
-        });
+          return response.json({user});
     });
   },
   async resetPassword(request, response) {
@@ -147,22 +130,19 @@ module.exports = {
     bcrypt.hash(password, saltRounds, 
       async (err, hash) => {
         if (err) {
-            return err.message;
+          return err.message;
         }
 
-        await UsersModel.findById(id, async (err, user) => {
+        await UsersModel.findByIdAndUpdate(id, {
+          password: hash,
+          token: '',
+          expires: 0
+        },
+        (err, user) => {
             if (err)
-              res.send(err);
-
-            user.password = hash;
-            user.token = null;
-            user.expires = null;
-            
-            await user.save((err) => {
-              if (err) res.json(err);
+              response.send(err);
     
-              return response.json({ user });
-            });
+            return response.json({ user });
         });
     });
     
