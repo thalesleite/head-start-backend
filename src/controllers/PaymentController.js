@@ -1,4 +1,7 @@
-const stripe = require('stripe')('sk_test_51HRaroIVkTQz2SNYPFAIFyzfjavaKDJhydaqOBQGfoxbZtoXSeXO6rQYZ48ipy86H4Msg3zrA5fuhn08TuTiJZDf004983uB1B');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const stripe = require('stripe')(`${process.env.STRIPE_KEY}`);
 const local = require('../utils/getDomain');
 
 module.exports = {
