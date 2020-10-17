@@ -14,7 +14,7 @@ app.use(express.json());
 
 //connect to database
 const mongo = mongoose.connect(
-    process.env.MONGODB_URI, 
+    `${process.env.MONGODB_URI}`,
     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
 );
 mongo.then(() => {
