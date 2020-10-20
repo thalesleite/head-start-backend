@@ -57,7 +57,9 @@ routes.post('/courses', celebrate({
 }), CoursesController.create);
 
 routes.get('/user-courses/:id', UsersCoursesController.show);
+routes.get('/user-courses-course/:id', UsersCoursesController.showByCourse);
 routes.put('/user-courses', UsersCoursesController.update);
+routes.put('/user-courses-date', UsersCoursesController.updateDate);
 routes.post('/user-courses', celebrate({
   [Segments.BODY]: Joi.object().keys({
     user_id: Joi.string().required(),

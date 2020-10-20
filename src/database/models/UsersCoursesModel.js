@@ -21,6 +21,9 @@ const UsersCoursesSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
     required: true
+  },
+  date_course: {
+    type: Date
   }
 });
 

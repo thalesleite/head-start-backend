@@ -10,17 +10,19 @@ module.exports = {
   async show(request, response) {
     const { id } = request.params;
 
-    // const course = await connection('courses')
-    //                       .join('users_courses', 'users_courses.course_id', '=', 'courses.id')
-    //                       .where('user_id', id);
     const userCourse = await UsersCoursesModel.find({'user_id': id});
-    //console.log(userCourse);
 
     if ( userCourse.length > 0 ) {
       const promises = userCourse.map(async el => {
         const resp = await CoursesModel.findById(el.course_id);
 
-        return { level: el.level, deadline: el.deadline, ...resp._doc };
+        return { 
+          userCourseId: el._id,
+          level: el.level,
+          dateCourse: el.date_course,
+          deadline: el.deadline, 
+          ...resp._doc 
+        };
       });
       const course = await Promise.all(promises);
 
@@ -32,6 +34,20 @@ module.exports = {
     }
 
     return response.json({ userCourse });
+  },
+  async showByCourse(request, response) {
+    const { id } = request.params;
+
+    const userCourse = await UsersCoursesModel.findById(id);
+    const course = await CoursesModel.findById(userCourse.course_id);
+
+    if (userCourse.length === 0 || course.length === 0) {
+      return response.status(400).json({
+        message: 'Courses not found!'
+      });
+    }
+
+    return response.json({ userCourse, ...course });
   },
   async create(request, response) {
       const { 
@@ -76,5 +92,23 @@ module.exports = {
 
       return response.json({user});
     });
+  },
+  async updateDate(request, response) {
+    const {
+      id,
+      dateCourse
+    } = request.body;
+
+    await UsersCoursesModel.findByIdAndUpdate(id, {
+        date_course: dateCourse
+      },
+      (err, doc) => {
+        if (err)
+          response.send(err);
+
+        return response.json({
+          doc
+        });
+      });
   }
 }
