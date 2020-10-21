@@ -2,9 +2,9 @@ const CoursesModel = require('../database/models/CoursesModel');
 
 module.exports = {
   async index(request, response){
-      const courses = await CoursesModel.find({});
+    const courses = await CoursesModel.find({});
 
-      return response.json(courses);
+    return response.json(courses);
   },
   async showActive(request, response) {
     const courses = await CoursesModel.find({'active': true});

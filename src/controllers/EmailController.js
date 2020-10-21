@@ -42,39 +42,37 @@ module.exports = {
   },
   async sendCertificate(request, response){
     const { name, email } = request.body;
-
     const mailOptions = {
       from: `${user}`,
       to: `${email}`,
       subject: `Certificado Head Start Courses - Food Safety - HACCP(Level 1)`,
       html: `
-        <p>Parabens ${name}!</p>
-        <p>Você finalizou o curso Food Safety - HACCP(Level 1)</p>
-        <p>Segue em anexo o certificado e um pdf com o conteúdo do curso.</p>
-      `,
-      attachments: [
-        {
-          filename: 'certificate.pdf',
-          path: path.join(__dirname, '..', 'utils/files', 'certificate.pdf')
-        }
-      ]
+          <p>Parabens ${name}!</p>
+          <p>Você finalizou o curso Food Safety - HACCP(Level 1)</p>
+          <p>Segue em anexo o certificado e um pdf com um resumo do conteúdo do curso.</p>
+        `,
+      attachments: [{
+        filename: 'certificate.pdf',
+        path: path.join(__dirname, '..', 'utils/files', 'certificate.pdf')
+      }]
     };
 
-    try {
-      await generateCertificate.generate(name);
+    await generateCertificate.generate(name);
 
-      await smtpTransport.sendMail(mailOptions,
-        (error, info) => {
-          if(error) {
-            response.send(error);
-          }else {
-            response.send('Email sent: ' + info.response);
-          }
-          smtpTransport.close();
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    setTimeout(
+      async () => {
+        await smtpTransport.sendMail(mailOptions,
+          (error, info) => {
+            if (error) {
+              console.log(error);
+              response.send(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+              response.send('Email sent: ' + info.response);
+            }
+            smtpTransport.close();
+          });
+    }, 5000);
   },
   async sendRegistrationEmail(name, email) {
     const mailOptions = {

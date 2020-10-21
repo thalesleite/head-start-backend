@@ -13,6 +13,9 @@ const UsersCoursesSchema = new mongoose.Schema({
   level: {
     type: Number
   },
+  voucher: {
+    type: String
+  },
   deadline: {
     type: Date,
     required: true

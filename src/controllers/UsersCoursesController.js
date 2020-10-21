@@ -54,15 +54,18 @@ module.exports = {
         user_id, 
         course_id,
         type,
+        voucher,
         deadline
       } = request.body;
 
       const level = type === 'online' ? 1 : 0;
+      const setVoucher = type === 'online' ? voucher : '';
 
       const userCourse = new UsersCoursesModel();
       userCourse.user_id = user_id;
       userCourse.course_id = course_id;
       userCourse.level = level;
+      userCourse.voucher = setVoucher;
       userCourse.deadline = deadline;
 
       await userCourse.save((err, doc) => {

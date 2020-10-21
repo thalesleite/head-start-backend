@@ -6,6 +6,9 @@ const path = require('path');
 const fileName = path.join(__dirname, 'files', 'index.html');
 
 function generateHtml( name ) {
+  const today = new Date();
+  const date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+
   const stream = fs.createWriteStream(fileName);
   const html = new htmlCreator([
     {
@@ -14,7 +17,14 @@ function generateHtml( name ) {
     },
     {
         type: 'body',
-        attributes: { style: 'margin: 0px !important' },
+        attributes: { 
+                      style: `
+                        margin: 0px !important;
+                        font-family: 'Livvic', sans-serif;
+                        font-size: 14px;
+                        font-weight: 100;
+                      `
+                    },
         content: [
           {
             type: 'img',
@@ -32,9 +42,18 @@ function generateHtml( name ) {
                   type: 'h1',
                   content: `${name}`,
                   attributes: { style: `
-                                  font-size: 40px;
                                   position: absolute;
-                                  top: 40%;
+                                  top: 43%;
+                                  left: 50%;
+                                  transform: translate(-50%, -50%);
+                              `},
+                },
+                {
+                  type: 'h1',
+                  content: `${date}`,
+                  attributes: { style: `
+                                  position: absolute;
+                                  top: 74.4%;
                                   left: 50%;
                                   transform: translate(-50%, -50%);
                               `},
@@ -70,8 +89,11 @@ function generatePdf() {
     try {
       await run();
       console.log("PDF - DONE");
+      return true;
+
     } catch (error) {
       console.error(error);
+      return false;
     } 
   })();
 }
@@ -79,8 +101,10 @@ function generatePdf() {
 module.exports = {
   generate( name ) {
     (async () => {
-      await generateHtml( name );
+      await generateHtml(name);
       await generatePdf();
     })();
   }
 }
+
+//generate('');
