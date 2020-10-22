@@ -8,6 +8,7 @@ const UsersCoursesController = require('./controllers/UsersCoursesController');
 const SessionController = require('./controllers/SessionController');
 const EmailController = require('./controllers/EmailController');
 const PaymentController = require('./controllers/PaymentController');
+const ReportsController = require('./controllers/ReportsController');
 
 routes.post('/sessions', celebrate({
   [Segments.BODY]: Joi.object().keys({
@@ -65,7 +66,8 @@ routes.post('/user-courses', celebrate({
     user_id: Joi.string().required(),
     course_id: Joi.string().required(),
     type: Joi.string().required(),
-    deadline: Joi.string().required()
+    deadline: Joi.string().required(),
+    voucher: [Joi.string().optional(), Joi.allow(null)]
   })
 }), UsersCoursesController.create);
 
@@ -89,5 +91,7 @@ routes.post('/send-password', celebrate({
     email: Joi.string().required().email()
   })
 }), EmailController.sendPassword);
+
+routes.get('/reports', ReportsController.index);
 
 module.exports = routes;
