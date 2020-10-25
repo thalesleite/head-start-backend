@@ -9,6 +9,7 @@ const SessionController = require('./controllers/SessionController');
 const EmailController = require('./controllers/EmailController');
 const PaymentController = require('./controllers/PaymentController');
 const ReportsController = require('./controllers/ReportsController');
+const VouchersController = require('./controllers/VouchersController');
 
 routes.post('/sessions', celebrate({
   [Segments.BODY]: Joi.object().keys({
@@ -93,5 +94,8 @@ routes.post('/send-password', celebrate({
 }), EmailController.sendPassword);
 
 routes.get('/reports', ReportsController.index);
+
+routes.get('/vouchers', VouchersController.index);
+routes.put('/voucher', VouchersController.update);
 
 module.exports = routes;
