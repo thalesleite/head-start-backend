@@ -20,7 +20,7 @@
     "html-creator": "^0.4.4",
     "html5-to-pdf": "^4.0.1",
     "mongoose": "^5.10.9",
-    "nodemailer": "^6.4.11",
+    "nodemailer": "^6.4.16",
     "puppeteer": "^5.3.1",
     "stripe": "^8.96.0"
   },
