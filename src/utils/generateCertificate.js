@@ -1,4 +1,5 @@
 const fs = require('fs');
+const nodemailer = require('nodemailer');
 const htmlCreator = require('html-creator');
 const HTML5ToPDF = require('html5-to-pdf');
 const path = require('path');
@@ -10,7 +11,7 @@ function generateHtml( name ) {
   const date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
 
   const stream = fs.createWriteStream(fileName);
-  const html = new htmlCreator([
+  const html = new htmlCreator().withBoilerplate([
     {
         type: 'head',
         content: [{ type: 'title', content: 'Head Courses Certificate' }]
@@ -107,4 +108,50 @@ module.exports = {
   }
 }
 
-//generate('');
+//generate('Ulma Caballero');
+//sendCertificate('Ulma Caballero', 'thalesaleite@gmail.com')
+
+// send email
+// function sendCertificate(name, email) {
+//   const user = process.env.EMAIL_USERNAME;
+//   const password = process.env.EMAIL_PASSWORD;
+
+//   const smtpTransport = nodemailer.createTransport({
+//     //service: 'gmail',
+//     host: 'smtp.gmail.com',
+//     port: 587,
+//     auth: {
+//       type: "login", // default
+//       user: user,
+//       pass: password
+//     }
+//   });
+
+//   const mailOptions = {
+//     from: `${user}`,
+//     to: `${email}`,
+//     subject: `Certificado Head Start Courses - Food Safety - HACCP(Level 1)`,
+//     html: `
+//           <p>Parabens ${name}!</p>
+//           <p>Você finalizou o curso Food Safety - HACCP(Level 1)</p>
+//           <p>Segue em anexo o certificado e um pdf com um resumo do conteúdo do curso.</p>
+//         `,
+//     attachments: [{
+//       filename: 'certificate.pdf',
+//       path: path.join(__dirname, '..', 'utils/files', 'certificate.pdf')
+//     }]
+//   };
+
+//   setTimeout(
+//     async () => {
+//       await smtpTransport.sendMail(mailOptions,
+//         (error, info) => {
+//           if (error) {
+//             console.log(error);
+//           } else {
+//             console.log('Email sent: ' + info.response);
+//           }
+//           smtpTransport.close();
+//         });
+//     }, 5000);
+// }
